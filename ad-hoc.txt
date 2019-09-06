@@ -1,0 +1,18 @@
+   19  yum install -y ansible
+   32  pip install ansible
+   35  rpm -qa ansible
+   36  git clone https://github.com/RedHat-sunny/ansible
+   48  cd ansible/
+   50  ansible --version
+   51  touch ansible.cfg
+   53  ansible localhost -m ping
+   57  cat ansible.cfg 
+   59  ansible locahost -m copy -a "content='Ansible is awesome'" dest=./motd'
+   62  ansible localhost -m copy -a "echo 'Ansible is good' dest=./motd"
+   64  ansible localhost -m lineinfile -a "line='ansible is great' dest=./motd"
+   80  ansible-doc lineinfile
+   82  ansible localhost -m lineinfile -a "regexp='^ansible is evolving' line='ansible is great' dest=./motd"
+   84  ansible localhost -m lineinfile -a "regexp='^ansible is great' line='ansible is crazy'dest=./motd"
+   89  ansible localhost -m lineinfile -a "regexp='^Ansible is good' line='ansible is crazy' path=./motd"
+   94  history | grep ansible
+   95  history | grep ansible > ad-hoc.txt
