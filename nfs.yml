@@ -1,0 +1,51 @@
+
+- name: Configure nfs server
+  hosts: localhost
+  tasks:
+   - name: Install nfs
+     yum:
+      name: nfs-utils
+      state: present
+
+   - name: Create a directory if it does not exist
+     file:
+       path: /root/nfsshare
+       state: directory
+       mode: '0755'
+     
+
+   - name: make entry in /etc/exports
+     copy:
+       content: '/root/nfsshare      192.168.122.130(rw,sync)'
+       dest: /etc/exports
+
+   - name: Restart nfs service
+     service:
+       name: nfs
+       state: restarted
+
+
+   - name: Add entry in firewall
+     firewalld:
+        service: nfs
+        permanent: yes
+        state: enabled
+
+
+- name: Configure nfs client
+  hosts: nfsgroup2
+  tasks:
+  - name: Create a directory /mnt/nfs
+    file:
+      path: /mnt/nfs
+      state: directory
+      mode: '0755'
+  
+  - name: Mount up device by label
+    mount:
+      path: /mnt/nfs
+      src: 192.168.122.251:/root/nfsshare
+      fstype: nfs
+      opts: defaults
+      state: present
+
